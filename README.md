@@ -58,4 +58,3 @@ Here is a simple example of how you can use HappyHB:
 
 - Ensure that your PDB file is correctly formatted and contains the necessary structural information for hydrogen bond analysis.
 - For more advanced usage and customization options, please refer to the program's documentation.
-- 

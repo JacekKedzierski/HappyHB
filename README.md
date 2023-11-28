@@ -49,7 +49,7 @@ Here is a simple example of how you can use HappyHB:
 3. Run the program using the command:
 
     ```bash
-    $ python HappyLoop.py protein.pdb
+    $ python HappyLoop.py --directory Input/Development
     ```
 
 4. HappyHB will process your PDB file and provide you with information about the hydrogen bond donors, acceptors, and their interactions.

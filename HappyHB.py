@@ -17,34 +17,7 @@ class Atom:
         self.AtomBonds = []
         self.BondPartners = []
 
-    def GetAtomPdbNumber(self):
-        return self.AtomPdbNumber
-
-    def GetAtomTypeExtended(self):
-        return self.AtomTypeExtended
-
-    def GetResidueName(self):
-        return self.ResidueName
-
-    def GetChain(self):
-        return self.Chain
-
-    def GetResidueNumber(self):
-        return self.ResidueNumber
-
-    def GetXcoordinate(self):
-        return self.Xcoordinate
-
-    def GetYcoordinate(self):
-        return self.Ycoordinate
-
-    def GetZcoordinate(self):
-        return self.Zcoordinate
-
-    def GetAtomType(self):
-        return self.AtomType
-
-    def	GetVdWRadius(self):
+    def	VdWRadius(self):
         if self.AtomType == 'C':
             return float(1.70)
         elif self.AtomType == 'O':
@@ -72,14 +45,8 @@ class Atom:
     def AddBondPartner(self, Partner):
         self.BondPartners.append(Partner)
 
-    def GetBondPartner(self):
-        return self.BondPartners
-
     def	SetHybridisation(self,Hybridisation):
         self.Hybridisation = Hybridisation
-
-    def	GetHybridisation(self):
-        return self.Hybridisation
 
     def IsDonor(self):
         DonorAtoms = ['H']
@@ -144,7 +111,7 @@ def AtomsDistance(Atom1, Atom2):
 
 def Bonded(Atom1, Atom2):
 
-    if (AtomsDistance(Atom1, Atom2) < (Atom1.GetVdWRadius() + Atom2.GetVdWRadius()) * 0.528):
+    if (AtomsDistance(Atom1, Atom2) < (Atom1.VdWRadius() + Atom2.VdWRadius()) * 0.528):
         return True
     else:
         return False    
@@ -165,24 +132,8 @@ def AssignHybridisation(AtomList):
 
     for Atom1Instancece in AtomList:
         
-        NumberOfPartners = len(Atom1Instancece.GetBondPartner())
+        NumberOfPartners = len(Atom1Instancece.BondPartner())
         Atom1Instancece.SetHybridisation(NumberOfPartners)
-
-# def ClosestNeighbour(Atom1, AtomList):
-#     AtomNeighbours={}
-
-#     for Neighbour in AtomList:
-#         Distance = AtomsDistance(Atom1, Neighbour)
-#         AtomNeighbours[Neighbour] = Distance
-
-#     ClosestSorted = sorted(AtomNeighbours.items(), key=lambda x: x[1], reverse=False)
-
-#     for ClosestFound, Distance in ClosestSorted:
-
-#         if Atom1.GetResidueNumber() != ClosestFound.GetResidueNumber():
-#             return ClosestFound
-
-#     return False
 
 def InvolvedInHB(Atom1, AtomList):
 
@@ -197,7 +148,7 @@ def InvolvedInHB(Atom1, AtomList):
 
     for ClosestFound, Distance in ClosestSorted:
 
-        if Atom1.GetResidueNumber() != ClosestFound.GetResidueNumber():
+        if Atom1.ResidueNumber != ClosestFound.ResidueNumber:
             Closest = ClosestFound
             break
 
@@ -219,28 +170,24 @@ def InvolvedInHB(Atom1, AtomList):
 
 def GenerateResidueList(AtomList):
     ResidueList = []
-    tmpResidueNumber = AtomList[0].GetResidueNumber()
+    tmpResidueNumber = AtomList[0].ResidueNumber
     for Atom1 in AtomList:
         tmpResidueList = []
-        if tmpResidueNumber == Atom1.GetResidueNumber():
+        if tmpResidueNumber == Atom1.ResidueNumber:
             tmpResidueList.append(Atom1)
         else:
             ResidueList.append(Residue(tmpResidueList))
-            tmpResidueNumber = Atom1.GetResidueNumber()
+            tmpResidueNumber = Atom1.ResidueNumber
 
     return ResidueList
 
 def AddWater(Atom1, AtomList):
-    partner = Atom1.GetBondPartner()[0]
-    vector = [Atom1.GetXcoordinate() - partner.GetXcoordinate(), Atom1.GetYcoordinate() - partner.GetYcoordinate(), Atom1.GetZcoordinate() - partner.GetZcoordinate()]
+    partner = Atom1.BondPartner()[0]
+    vector = [Atom1.Xcoordinate() - partner.Xcoordinate(), Atom1.Ycoordinate() - partner.Ycoordinate(), Atom1.Zcoordinate() - partner.Zcoordinate()]
     
-    Xcoordinate = Atom1.GetXcoordinate() + 2 * vector[0]
-    Ycoordinate = Atom1.GetYcoordinate() + 2 * vector[1]
-    Zcoordinate = Atom1.GetZcoordinate() + 2 * vector[2]
-
-    # print(round(Xcoordinate, 3), round(Ycoordinate, 3), round(Zcoordinate, 3))
-    # print(round(Xcoordinate + 1, 3), round(Ycoordinate + 1, 3), round(Zcoordinate, 3))
-    # print(round(Xcoordinate - 1, 3), round(Ycoordinate + 1, 3), round(Zcoordinate, 3))
+    Xcoordinate = Atom1.Xcoordinate() + 2 * vector[0]
+    Ycoordinate = Atom1.Ycoordinate() + 2 * vector[1]
+    Zcoordinate = Atom1.Zcoordinate() + 2 * vector[2]
 
     AtomList.append(Atom('HETATM', '1', 'X', 'X', 'X', 'X', Xcoordinate, Ycoordinate, Zcoordinate, 'O'))
     AtomList.append(Atom('HETATM', '1', 'X', 'X', 'X', 'X', Xcoordinate + (1/2**(1/2)), Ycoordinate + (1/2**(1/2)), Zcoordinate, 'H'))
@@ -258,7 +205,7 @@ def main(path, file):
     AssignHybridisation(AtomList)
 
     for Atom1Instancece in AtomList:
-        if Atom1Instancece.IsDonor() and not InvolvedInHB(Atom1Instancece,AtomList) and Atom1Instancece.GetResidueName() == 'UNK':
+        if Atom1Instancece.IsDonor() and not InvolvedInHB(Atom1Instancece,AtomList) and Atom1Instancece.ResidueName() == 'UNK':
             AtomList = AddWater(Atom1Instancece, AtomList)
 
     CreateConnectivityMatrix(AtomList)
@@ -266,8 +213,8 @@ def main(path, file):
             
     n = 0
     for AtomInstance1 in AtomList:
-        if AtomInstance1.GetAtomType() == 'X':
-            if AtomInstance1.GetHybridisation() != 0:
+        if AtomInstance1.AtomType() == 'X':
+            if AtomInstance1.Hybridisation() != 0:
                 n = n +1
     print('Found', n, 'Unhappy HB donors')
 

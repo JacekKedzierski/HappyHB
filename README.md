@@ -2,7 +2,7 @@
 
 **Description:**
 
-HappyHB is a program designed to analyze a given molecular structure, identify hydrogen bond donors and acceptors, and build a hydrogen bond network. It accepts the molecular structure in PDB (Protein Data Bank) format. This README provides an overview of how to install and use the program.
+HappyHB is a program designed to analyze a given molecular structure, identify hydrogen bond donors and build a hydrogen bond network. It accepts the molecular structure in PDB (Protein Data Bank) format. This README provides an overview of how to install and use the program.
 
 **Installation:**
 
@@ -20,24 +20,6 @@ Once you have Python 3 installed, you can follow these steps to obtain the Happy
 
 This will download the program files to your local machine.
 
-**Usage:**
-
-1. After successfully downloading the HappyHB program files, navigate to the directory where the program files are located using your terminal.
-
-2. To run the program, execute the following command:
-
-    ```bash
-    $ python HappyLoop.py
-    ```
-
-3. The program will analyze the given molecular structure provided in PDB format.
-
-4. It will identify the hydrogen bond donors and acceptors in the structure.
-
-5. The program will then build a hydrogen bond network based on these donors and acceptors.
-
-6. Finally, it will output a list of identified hydrogen bond donors and acceptors, along with their bonding partners.
-
 **Example Usage:**
 
 Here is a simple example of how you can use HappyHB:
@@ -52,7 +34,7 @@ Here is a simple example of how you can use HappyHB:
     $ python HappyLoop.py --directory Input/Development
     ```
 
-4. HappyHB will process your PDB file and provide you with information about the hydrogen bond donors, acceptors, and their interactions.
+4. HappyHB will process your PDB file and provide you with information about the hydrogen bond donors and their interactions.
 
 **Note:**
 
